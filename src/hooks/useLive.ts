@@ -11,7 +11,15 @@ interface SocketInterface {
 }
 
 const useLive = () => {
-  const { refetch } = useStatusQuery("action", getAction, false);
+  const { refetch } = useStatusQuery(
+    "action",
+    getAction,
+    false,
+    (e) => {
+      alert(`Failed to send action : ${e}`);
+    },
+    closePopup
+  );
   const [data, setData] = useState<StatusModel>();
   const [isClosed, setIsClosed] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState<boolean>(false);
@@ -45,17 +53,10 @@ const useLive = () => {
     setIsClosed(stopFlag);
   };
 
-  /** - send action when action is required */
-  const sendAction = async () => {
-    try {
-      refetch();
-
-      setShowPopup(false);
-    } catch (e) {
-      alert(`Failed to send action : ${e}`);
-    } finally {
-      ref.current!.setChangeData(true);
-    }
+  /** - close button or onSettled in use query */
+  function closePopup() {
+    setShowPopup(false);
+    ref.current!.setChangeData(true);
   };
 
   return {
@@ -63,11 +64,8 @@ const useLive = () => {
     toggleConnection,
     isClosed,
     showPopup,
-    sendAction,
-    closePopup: () => {
-      setShowPopup(false);
-      ref.current!.setChangeData(true);
-    },
+    sendAction: async () => await refetch(),
+    closePopup,
   };
 };
 
