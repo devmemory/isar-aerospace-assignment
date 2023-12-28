@@ -8,6 +8,7 @@ const StatusSocket = (callback: callbackType) => {
   let socket: WebSocket;
 
   let stopFlag = false;
+  let changeData = true;
 
   /** - connect socket */
   const connect = () => {
@@ -28,7 +29,7 @@ const StatusSocket = (callback: callbackType) => {
         return;
       }
 
-      // re connect if socket is closed by error
+      // re connect if socket is closed by error and make sure if it's closed
       if (socket.readyState === socket.CLOSED) {
         setTimeout(() => {
           connect();
@@ -37,6 +38,10 @@ const StatusSocket = (callback: callbackType) => {
     };
 
     socket.onmessage = (e) => {
+      if (!changeData) {
+        return;
+      }
+
       const {
         Velocity: velocity,
         Altitude: altitude,
@@ -75,6 +80,9 @@ const StatusSocket = (callback: callbackType) => {
       connect();
 
       return stopFlag;
+    },
+    setChangeData: (value: boolean) => {
+      changeData = value;
     },
   };
 };

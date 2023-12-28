@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StatusModel } from "src/models/statusModel";
 import StatusApi from "src/services/StatusApi";
 import StatusSocket from "src/services/StatusSocket";
@@ -6,6 +6,7 @@ import StatusSocket from "src/services/StatusSocket";
 interface SocketInterface {
   close: () => boolean;
   reconnect: () => boolean;
+  setChangeData: (value: boolean) => void;
 }
 
 const useLive = () => {
@@ -25,7 +26,7 @@ const useLive = () => {
   useEffect(() => {
     if (data?.isActionRequired) {
       setShowPopup(true);
-      toggleConnection();
+      ref.current!.setChangeData(false);
     }
   }, [data]);
 
@@ -53,7 +54,7 @@ const useLive = () => {
     } catch (e) {
       alert(`Failed to send action : ${e}`);
     } finally {
-      toggleConnection();
+      ref.current!.setChangeData(true);
     }
   };
 
@@ -64,8 +65,8 @@ const useLive = () => {
     showPopup,
     sendAction,
     closePopup: () => {
-      toggleConnection();
       setShowPopup(false);
+      ref.current!.setChangeData(true);
     },
   };
 };
