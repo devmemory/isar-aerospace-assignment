@@ -1,36 +1,27 @@
 import React from "react";
-import { useQuery } from "react-query";
 import Button from "src/components/Button";
 import Loading from "src/components/Loading";
 import StatusMonitor from "src/components/StatusMonitor";
-import { StatusModel } from "src/models/statusModel";
-import StatusApi from "src/services/StatusApi";
+import useStatusQuery from "src/hooks/useStatusQuery";
+import { getStatus } from "src/services/StatusApi";
 import styled from "styled-components";
 
 const Error = styled.div`
   height: 100vh;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
 const Batch = () => {
-  const { isLoading, error, data, refetch } = useQuery<StatusModel>(
+  const { isLoading, error, data, refetch } = useStatusQuery(
     "status",
-    async () => {
-      const api = new StatusApi();
-
-      return await api.getStatus();
-    },
-    {
-      refetchOnWindowFocus: false,
-    }
+    getStatus
   );
 
-  const onClick = () => {
-    refetch();
-  };
+  const onClick = () => refetch();
 
   if (isLoading) {
     return <Loading />;

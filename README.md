@@ -31,7 +31,7 @@ server: {
 - Assignment3.md : Feedback for backend.
 - spec.md : This is what I searched and applied while doing this project. Of course, spec might be different from what Isar Aerospace use.
 
-## Develop environment
+## Development environment
 - View library : React
 - Languages : Typescript, HTML, CSS
 - Bundler : Vite
@@ -77,6 +77,7 @@ server: {
 #### hooks
 - useAltitude : altitude component logic
 - useLive : live data logic
+- useStatusQuery : usequery customhooks with options 
 - useTemperature : temperature component logic
 
 #### models

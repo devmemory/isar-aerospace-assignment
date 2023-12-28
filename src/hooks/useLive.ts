@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { StatusModel } from "src/models/statusModel";
-import StatusApi from "src/services/StatusApi";
+import { getAction } from "src/services/StatusApi";
 import StatusSocket from "src/services/StatusSocket";
+import useStatusQuery from "./useStatusQuery";
 
 interface SocketInterface {
   close: () => boolean;
@@ -10,6 +11,7 @@ interface SocketInterface {
 }
 
 const useLive = () => {
+  const { refetch } = useStatusQuery("action", getAction, false);
   const [data, setData] = useState<StatusModel>();
   const [isClosed, setIsClosed] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState<boolean>(false);
@@ -45,10 +47,8 @@ const useLive = () => {
 
   /** - send action when action is required */
   const sendAction = async () => {
-    const api = new StatusApi();
-
     try {
-      await api.getAction();
+      refetch();
 
       setShowPopup(false);
     } catch (e) {

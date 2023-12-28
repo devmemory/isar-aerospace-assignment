@@ -1,7 +1,7 @@
 import { StatusModel } from "src/models/statusModel";
 import Api from "./api";
 
-export default class StatusApi extends Api {
+class StatusApi extends Api {
   async getStatus() {
     const res = await super.get<StatusModel>("/api/SpectrumStatus");
     //api : "/api/SpectrumStatus"
@@ -13,6 +13,20 @@ export default class StatusApi extends Api {
   async getAction() {
     const res = await super.get("/api/ActOnSpectrum");
 
-    console.log({res})
+    console.log({ res });
   }
 }
+
+/** - status api */
+export const getStatus = async () => {
+  const api = new StatusApi();
+
+  return await api.getStatus();
+};
+
+/** - action api */
+export const getAction = async () => {
+  const api = new StatusApi();
+
+  return await api.getAction();
+};
