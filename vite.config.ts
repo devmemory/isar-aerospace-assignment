@@ -8,6 +8,14 @@ export default defineConfig(({ command }) => {
     build: {
       outDir: "build",
       assetsDir: "app",
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ["react", "react-router-dom", "react-dom"],
+            style: ["styled-components"],
+          },
+        },
+      },
     },
     resolve: {
       alias: {

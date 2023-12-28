@@ -38,7 +38,7 @@ const MessageBar = ({ isActionRequired, statusMessage }: props) => {
   };
 
   return (
-    <Container $bg={isActionRequired ? "var(--point-color)" : "#66BB6A"}>
+    <Container $bg={isActionRequired ? "red" : "var(--point-color)"}>
       {statusMessage}
       <button onClick={toggleRoute}>{isLive ? "Live" : "Batch"}</button>
     </Container>

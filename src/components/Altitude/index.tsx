@@ -5,7 +5,7 @@ import { ALTITUDE_INFO } from "src/utils/constants";
 import styled from "styled-components";
 import Table from "./Table";
 
-const Container = styled.div`s
+const Container = styled.div`
   width: 100%;
   background-color: var(--container-color);
   padding: 8px;

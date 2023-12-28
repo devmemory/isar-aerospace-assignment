@@ -1,5 +1,4 @@
 import { StatusModel } from "src/models/statusModel";
-import StatusApi from "./StatusApi";
 
 type callbackType = React.Dispatch<
   React.SetStateAction<StatusModel | undefined>
@@ -10,13 +9,9 @@ const StatusSocket = (callback: callbackType) => {
 
   let stopFlag = false;
 
-  const api = new StatusApi();
-
   /** - connect socket */
   const connect = () => {
-    socket = new WebSocket(
-      `ws://${window.location.host}/api/SpectrumWS`
-    );
+    socket = new WebSocket(`ws://${window.location.host}/api/SpectrumWS`);
 
     socket.onopen = (e) => {
       console.log("[socket] connected", { e });
@@ -34,9 +29,11 @@ const StatusSocket = (callback: callbackType) => {
       }
 
       // re connect if socket is closed by error
-      setTimeout(() => {
-        connect();
-      }, 1000);
+      if (socket.readyState === socket.CLOSED) {
+        setTimeout(() => {
+          connect();
+        }, 3000);
+      }
     };
 
     socket.onmessage = (e) => {
@@ -59,10 +56,6 @@ const StatusSocket = (callback: callbackType) => {
       };
 
       console.log("[socket] data", { data });
-
-      if (isActionRequired) {
-        api.getAction();
-      }
 
       callback(data);
     };
